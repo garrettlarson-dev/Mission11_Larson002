@@ -1,0 +1,45 @@
+﻿@using Mission11.Controllers
+@model IEnumerable<Mission11.Models.Book>
+
+@{
+    ViewData["Title"] = "Book List"; 
+    int currentPage = ViewBag.CurrentPage as int? ?? 1; // Retrieve the current page from ViewBag
+    int totalBooks = ViewBag.TotalBooks;
+    int totalPages = (int)Math.Ceiling((double)totalBooks / HomeController.PageSize); // Use BooksController.PageSize
+}
+<h1 class="text-center">Welcome to My Book Store!</h1>
+<div class="container">
+     <div class="row">
+         @foreach (var book in Model)
+         {
+             <div class="col-md-4 mb-4">
+                 <div class="card h-100">
+                     <!-- Optional: Insert an image here using <img> tag with class="card-img-top" if you have book images -->
+                     <div class="card-body">
+                         <h5 class="card-title">@book.Title</h5>
+                         <p class="card-text">Author: @book.Author</p>
+                         <p class="card-text">Publisher: @book.Publisher</p>
+                         <p class="card-text">ISBN: @book.Isbn</p>
+                         <p class="card-text">Category: @book.Category</p>
+                         <p class="card-text">Classification: @book.Classification</p>
+                         <p class="card-text">@book.PageCount Pages</p>
+                     </div>
+                     <div class="card-footer">
+                         <small class="text-muted">Price: @book.Price.ToString("c")</small>
+                     </div>
+                 </div>
+             </div>
+         }
+     </div>
+ </div>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        @for (int i = 1; i <= totalPages; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
